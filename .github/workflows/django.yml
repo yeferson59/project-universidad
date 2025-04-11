@@ -38,22 +38,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r template-jango/requirements/local.txt
 
-      - name: Run Tests
-        env:
-          POSTGRES_NAME: test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5432
+      - name: Setup Environment for Tests
         run: |
           cd template-jango/proyecto_django
-          # Configurar base de datos para pruebas
-          sed -i 's/"NAME":""/"NAME":"test_db"/g' proyecto_django/settings/local.py
-          sed -i 's/"USER":""/"USER":"postgres"/g' proyecto_django/settings/local.py
-          sed -i 's/"PASSWORD":""/"PASSWORD":"postgres"/g' proyecto_django/settings/local.py
-          sed -i 's/"HOST":""/"HOST":"localhost"/g' proyecto_django/settings/local.py
-          sed -i 's/"PORT":""/"PORT":"5432"/g' proyecto_django/settings/local.py
-          # Corregir formato de MEDIA_ROOT
-          sed -i "s/MEDIA_ROOT = \[BASE_DIR \/ 'media'\]/MEDIA_ROOT = BASE_DIR \/ 'media'/g" proyecto_django/settings/local.py
-          # Ejecutar pruebas
+          echo "SECRET_KEY=django-insecure-ci-testing-key" > .env
+          echo "DEBUG=False" >> .env
+          echo "ALLOWED_HOSTS=127.0.0.1,localhost" >> .env
+          echo "DB_ENGINE=django.db.backends.postgresql" >> .env
+          echo "DB_NAME=test_db" >> .env
+          echo "DB_USER=postgres" >> .env
+          echo "DB_PASSWORD=postgres" >> .env
+          echo "DB_HOST=localhost" >> .env
+          echo "DB_PORT=5432" >> .env
+
+      - name: Run Tests
+        run: |
+          cd template-jango/proyecto_django
           python manage.py test
