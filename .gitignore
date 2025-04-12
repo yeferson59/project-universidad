@@ -9,3 +9,4 @@ __pycache__/
 .Python
 db.sqlite3
 media
+.mypy_cache/
