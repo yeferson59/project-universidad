@@ -5,7 +5,7 @@ Local settings for the Django project.
 
 from decouple import Csv, config
 
-from .base import BASE_DIR
+from .base import *  # noqa: F403
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config("SECRET_KEY")
@@ -31,7 +31,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]  # noqa: F405
 
 MEDIA_URL = "media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "media"  # noqa: F405
