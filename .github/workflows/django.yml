@@ -51,10 +51,6 @@ jobs:
         run: |
           black --check template-jango/proyecto_django
 
-      - name: Check import order
-        run: |
-          isort --check-only --profile black template-jango/proyecto_django
-
       - name: Setup Environment for Tests
         run: |
           cd template-jango/proyecto_django
@@ -67,6 +63,10 @@ jobs:
           echo "DB_PASSWORD=postgres" >> .env
           echo "DB_HOST=localhost" >> .env
           echo "DB_PORT=5432" >> .env
+
+      - name: Check import order
+        run: |
+          isort --check-only --profile black template-jango/proyecto_django
 
       - name: Run Tests
         run: |
