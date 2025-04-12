@@ -42,14 +42,13 @@ jobs:
         run: |
           flake8 template-jango/proyecto_django --max-line-length=100
 
-      - name: Type check with mypy
-        run: |
-          cd template-jango/proyecto_django
-          mypy .
-
       - name: Check formatting with black
         run: |
           black --check template-jango/proyecto_django
+
+      - name: Check import order
+        run: |
+          isort --check-only --profile black template-jango/proyecto_django
 
       - name: Setup Environment for Tests
         run: |
@@ -64,9 +63,10 @@ jobs:
           echo "DB_HOST=localhost" >> .env
           echo "DB_PORT=5432" >> .env
 
-      - name: Check import order
+      - name: Type check with mypy
         run: |
-          isort --check-only --profile black template-jango/proyecto_django
+          cd template-jango/proyecto_django
+          mypy .
 
       - name: Run Tests
         run: |
